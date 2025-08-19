@@ -8,6 +8,7 @@
 
 //Depndencies
 const express = require("express");
+const cookieParser = require("cookie-parser");
 
 //App instance
 const app = express();
