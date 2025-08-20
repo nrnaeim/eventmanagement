@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 //API config
-app.use("/api.v1", apiV1);
+app.use("/api/v1", apiV1);
 
 //Exporting app
 module.exports = app;
