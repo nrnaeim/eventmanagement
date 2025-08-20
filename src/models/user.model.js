@@ -40,7 +40,7 @@ const userSchema = new mongoose.Schema(
       maxlength: [32, "Max password lenght is 50"],
       match: [
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@!$%&])[A-Za-z\d@!$%&]{6,32}$/,
-        "Not a strong password",
+        "Password must have at least one Upper case, Lower case, Number and special character",
       ],
     },
     confirmPassword: {
