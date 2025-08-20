@@ -36,7 +36,20 @@ const errorHandler = (error) => {
       error: errors,
     };
   }
-  
+
+  //Json webtoken error
+  if (
+    error.name === "JsonWebTokenError" ||
+    error.name === "TokenExpiredError" ||
+    error.name === "NotBeforeError"
+  ) {
+    return {
+      code: 400,
+      error: `${error.message.charAt(0).toUpperCase()}${error.message.slice(
+        1
+      )}`,
+    };
+  }
   //Default error handler
   return {
     code: 500,
