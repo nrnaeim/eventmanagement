@@ -8,12 +8,14 @@
 //Dependencies
 const express = require("express");
 const authRoute = require("../routes/auth.route");
+const userRoute = require("../routes/user.route");
 
 //API instance
 const apiV1 = express.Router();
 
 //Route configuration
 apiV1.use("/auth", authRoute);
+apiV1.use("/users", userRoute);
 
 //Exporting API
 module.exports = apiV1;
