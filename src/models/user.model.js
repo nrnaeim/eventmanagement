@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      requied: [true, "Email is required"],
+      required: [true, "Email is required"],
       unique: [true, "Email already exist"],
       tolowercase: true,
       match: [/^[a-z0-9._-]+@[a-z]+\.[a-z]{2,}$/i, "Invalid email"],
@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      requied: [true, "Password is required"],
+      required: [true, "Password is required"],
       minlength: [6, "Min password lenght is 6"],
       maxlength: [32, "Max password lenght is 50"],
       match: [
@@ -45,7 +45,7 @@ const userSchema = new mongoose.Schema(
     },
     confirmPassword: {
       type: String,
-      requied: [true, "Password is required"],
+      required: [true, "Password is required"],
       validate: {
         validator: function (val) {
           return val === this.password;
