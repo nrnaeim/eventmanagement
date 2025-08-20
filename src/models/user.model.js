@@ -17,14 +17,14 @@ const userSchema = new mongoose.Schema(
       required: [true, "Name is required"],
       minlength: [3, "Min lenght of name is 3"],
       maxlength: [50, "Max lenght of name is 50"],
-      match: [/^[a-z ]{3,50}$/i, "Name can contains only letters and space"],
+      match: [/^[a-z ]{3,50}$/i, "Name can contains letters and space only"],
     },
     email: {
       type: String,
       requied: [true, "Email is required"],
       unique: [true, "Email already exist"],
       tolowercase: true,
-      match: [/^[a-z0-9]+@[a-z]+\.[a-z]{2,}$/i, "Invalid email"],
+      match: [/^[a-z0-9._-]+@[a-z]+\.[a-z]{2,}$/i, "Invalid email"],
     },
 
     phoneNumber: {
