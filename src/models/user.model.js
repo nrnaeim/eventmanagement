@@ -8,6 +8,7 @@
 //Dependencies
 
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema(
   {
@@ -60,5 +61,21 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.pre("save", function (next) {
-  this.confirmPassword = "undefined";
+  try {
+    this.confirmPassword = undefined;
+    if (this.isModified("password")) {
+      const hash = bcrypt.hashSync(this.password, 10);
+      this.password = hash;
+      return next();
+    }
+    return next();
+  } catch (error) {
+    return next(error);
+  }
 });
+
+//Defining model
+const User = mongoose.model("user", userSchema);
+
+//Exporting model
+module.exports = User;
