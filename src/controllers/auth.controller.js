@@ -7,8 +7,10 @@
  */
 //Dependencies
 
+const JWT = require("jsonwebtoken");
 const errorHandler = require("../handlers/error.handler");
 const User = require("../models/user.model");
+const bcrypt = require("bcrypt");
 
 //Register controller
 exports.signUp = async (req, res) => {
@@ -33,6 +35,81 @@ exports.signUp = async (req, res) => {
     return res.status(errReason.code).json({
       success: false,
       message: "Failed to create user",
+      error: Array.isArray(errReason.error)
+        ? errReason.error
+        : [errReason.error],
+    });
+  }
+};
+
+//Sign in controller
+exports.signIn = async (req, res) => {
+  try {
+    const { email, phoneNumber, password } = req.body;
+
+    const identifier = email || phoneNumber || password;
+    if (!identifier || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid credentials",
+      });
+    }
+    //Dynamic identifier
+    const query = {
+      $or: [
+        { email: identifier },
+        { phoneNumber: identifier },
+        { username: identifier },
+      ],
+    };
+    const projection = {
+      _id: 1,
+      name: 1,
+      email: 1,
+      phoneNumber: 1,
+      password: 1,
+    };
+
+    //Finding user
+    let user = await User.findOne(query, projection);
+    user = user.toObject();
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid login credentials",
+      });
+    }
+    const isMatched = await bcrypt.compare(password, user.password);
+    if (!isMatched) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid login credentials",
+      });
+    }
+    const payload = {
+      _id: user._id,
+      email: user.email,
+    };
+
+    const token = JWT.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
+
+    //Sending response after succefull verification
+    delete user.password;
+
+    const cookieOptions = {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+      maxAge: 24 * 60 * 60 * 1000,
+      path: "/",
+    };
+    return res.cookie("authToken", token, cookieOptions).status(200).json(user);
+  } catch (error) {
+    const errReason = errorHandler(error);
+    return res.status(errReason.code).json({
+      success: false,
       error: Array.isArray(errReason.error)
         ? errReason.error
         : [errReason.error],
