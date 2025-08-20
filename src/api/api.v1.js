@@ -7,9 +7,13 @@
  */
 //Dependencies
 const express = require("express");
+const authRoute = require("../routes/auth.route");
 
 //API instance
 const apiV1 = express.Router();
+
+//Route configuration
+apiV1.use("/auth", authRoute);
 
 //Exporting API
 module.exports = apiV1;
