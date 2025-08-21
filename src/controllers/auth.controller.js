@@ -9,6 +9,7 @@
 
 const JWT = require("jsonwebtoken");
 const errorHandler = require("../handlers/error.handler");
+const utils = require("../utils/utils");
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 
@@ -35,9 +36,7 @@ exports.signUp = async (req, res) => {
     return res.status(errReason.code).json({
       success: false,
       message: "Failed to create user",
-      error: Array.isArray(errReason.error)
-        ? errReason.error
-        : [errReason.error],
+      error: utils.ensureArray(errReason.error),
     });
   }
 };
@@ -110,9 +109,7 @@ exports.signIn = async (req, res) => {
     const errReason = errorHandler(error);
     return res.status(errReason.code).json({
       success: false,
-      error: Array.isArray(errReason.error)
-        ? errReason.error
-        : [errReason.error],
+      error: utils.ensureArray(errReason.error),
     });
   }
 };
