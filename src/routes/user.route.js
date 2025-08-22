@@ -13,7 +13,7 @@ const userController = require("../controllers/user.controller");
 const userRoute = express.Router();
 
 //Get user profile
-userRoute.get("/profile", userController.getUser);
+userRoute.get("/:id", userController.getUser);
 //Update user profile
 userRoute.put("/update", userController.updateUser);
 //Delete user profile
