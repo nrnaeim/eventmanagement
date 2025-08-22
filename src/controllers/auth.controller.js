@@ -109,6 +109,7 @@ exports.signIn = async (req, res) => {
     const errReason = errorHandler(error);
     return res.status(errReason.code).json({
       success: false,
+      message: "Failed to sign in",
       error: utils.ensureArray(errReason.error),
     });
   }
