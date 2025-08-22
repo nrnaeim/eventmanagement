@@ -15,5 +15,8 @@ const userRoute = express.Router();
 //Get user profile
 userRoute.get("/:id", userController.getUser);
 
+//Update user
+userRoute.post("/:id/update", userController.updateUser);
+
 //Exporting user route
 module.exports = userRoute;
