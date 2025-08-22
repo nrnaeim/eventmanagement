@@ -15,7 +15,8 @@ const authRoute = express.Router();
 
 //Register api
 authRoute.post("/signup", authController.signUp);
-authRoute.post("/signIn", authController.signIn);
+authRoute.post("/signin", authController.signIn);
+authRoute.get("/signout", authController.signOut);
 
 //Expotritn auth routes
 module.exports = authRoute;
