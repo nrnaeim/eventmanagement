@@ -104,7 +104,11 @@ exports.signIn = async (req, res) => {
       maxAge: 24 * 60 * 60 * 1000,
       path: "/",
     };
-    return res.cookie("authToken", token, cookieOptions).status(200).json(user);
+    return res.cookie("authToken", token, cookieOptions).status(200).json({
+      success: true,
+      message: "Sign in successfully",
+      data: user,
+    });
   } catch (error) {
     const errReason = errorHandler(error);
     return res.status(errReason.code).json({
