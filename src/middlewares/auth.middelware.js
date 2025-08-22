@@ -11,11 +11,14 @@ const JWT = require("jsonwebtoken");
 const utils = require("../utils/utils");
 const errorHandler = require("../handlers/error.handler");
 
-
 //Authentication
 exports.authentication = async (req, res, next) => {
   try {
-    //  console.log(req.cookies.authToken);
+    if (!req.cookies.authToken) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Authentication failed" });
+    }
     const payload = JWT.verify(req.cookies.authToken, process.env.JWT_SECRET);
     delete payload.iat;
     delete payload.exp;
@@ -24,7 +27,6 @@ exports.authentication = async (req, res, next) => {
     req.payload = payload;
     next();
   } catch (error) {
-    console.log(error);
     const errReason = errorHandler(error);
     return res.status(errReason.code).json({
       success: false,
