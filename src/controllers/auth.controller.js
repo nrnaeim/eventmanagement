@@ -118,3 +118,20 @@ exports.signIn = async (req, res) => {
     });
   }
 };
+
+//Sign out controller
+exports.signOut = async (req, res) => {
+  try {
+    return res
+      .clearCookie("authToken")
+      .status(200)
+      .json({ success: true, message: "User sign out successfullu" });
+  } catch (error) {
+    const errReason = errorHandler(error);
+    return res.status(errReason.code).json({
+      success: false,
+      message: "Failed to sign out",
+      error: errReason.error,
+    });
+  }
+};
