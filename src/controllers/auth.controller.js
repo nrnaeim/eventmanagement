@@ -46,7 +46,7 @@ exports.signIn = async (req, res) => {
   try {
     const { email, phoneNumber, password } = req.body;
 
-    const identifier = email || phoneNumber || password;
+    const identifier = email || phoneNumber;
     if (!identifier || !password) {
       return res.status(400).json({
         success: false,
@@ -55,11 +55,7 @@ exports.signIn = async (req, res) => {
     }
     //Dynamic identifier
     const query = {
-      $or: [
-        { email: identifier },
-        { phoneNumber: identifier },
-        { username: identifier },
-      ],
+      $or: [{ email: identifier }, { phoneNumber: identifier }],
     };
     const projection = {
       _id: 1,
@@ -71,13 +67,17 @@ exports.signIn = async (req, res) => {
 
     //Finding user
     let user = await User.findOne(query, projection);
-    user = user.toObject();
+
     if (!user) {
       return res.status(400).json({
         success: false,
         message: "Invalid login credentials",
       });
     }
+
+    //Converting user to object
+    user = user.toObject();
+
     const isMatched = await bcrypt.compare(password, user.password);
     if (!isMatched) {
       return res.status(400).json({
@@ -110,6 +110,7 @@ exports.signIn = async (req, res) => {
       data: user,
     });
   } catch (error) {
+    console.log(error);
     const errReason = errorHandler(error);
     return res.status(errReason.code).json({
       success: false,
