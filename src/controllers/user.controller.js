@@ -48,6 +48,10 @@ exports.updateUser = async (req, res) => {
   try {
     //Update stage
     const _id = utils.newObjectId(req.payload._id);
+
+    if (req.body.password) {
+      delete req.body.password;
+    }
     const updatedData = req.body;
     const options = {
       runValidators: true,
