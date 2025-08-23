@@ -13,10 +13,10 @@ const userController = require("../controllers/user.controller");
 const userRoute = express.Router();
 
 //Get user profile
-userRoute.get("/:id", userController.getUser);
+userRoute.get("/profile", userController.getProfile);
 
 //Update user
-userRoute.post("/:id/update", userController.updateUser);
+userRoute.post("/update", userController.updateUser);
 
 //Exporting user route
 module.exports = userRoute;
