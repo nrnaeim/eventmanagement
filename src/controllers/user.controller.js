@@ -71,7 +71,7 @@ exports.updateUser = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: "Profile fetch successfully",
+      message: "Profile update successfully",
       data: updatedUser,
     });
   } catch (error) {
