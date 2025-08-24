@@ -23,5 +23,19 @@ app.use(express.static("uploads"));
 //API config
 app.use("/api/v1", apiV1);
 
+//If route is not found
+app.use(async (req, res, next) => {
+  try {
+    return res.status(404).json({
+      success: false,
+      message: "Opps! page not found",
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+//Global level error handler
+
 //Exporting app
 module.exports = app;
