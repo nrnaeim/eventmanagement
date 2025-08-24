@@ -31,7 +31,7 @@ app.use(async (req, res, next) => {
       message: "Opps! page not found",
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 });
 
