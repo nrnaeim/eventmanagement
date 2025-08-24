@@ -1,0 +1,31 @@
+/*
+ * Title:
+ * Description:
+ * Author: Niemur Rahman
+ * Email: nrnaeim@gmail.com
+ * Date:
+ */
+//Dependencies
+const express = require("express");
+const eventController = require("../controllers/event.controller");
+
+//Event route instance
+const eventRoute = express.Router();
+
+//Create Event
+eventRoute.post("/create", eventController.create);
+
+//Read Single Event
+eventRoute.get("/:id", eventController.get);
+
+//Read All Events
+eventRoute.get("/", eventController.getAll);
+
+//Update Event
+eventRoute.put("/update", eventController.update);
+
+//Delete Event
+eventRoute.delete("/delete", eventController.delete);
+
+//Exporting event route
+module.exports = eventRoute;
