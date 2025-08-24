@@ -18,6 +18,7 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
+app.use(express.static("uploads"));
 
 //API config
 app.use("/api/v1", apiV1);
