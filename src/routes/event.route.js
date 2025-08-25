@@ -7,13 +7,14 @@
  */
 //Dependencies
 const express = require("express");
+const upload = require("../middlewares/upload.middleware");
 const eventController = require("../controllers/event.controller");
 
 //Event route instance
 const eventRoute = express.Router();
 
 //Create Event
-eventRoute.post("/create", eventController.create);
+eventRoute.post("/create", upload.single("bannar"), eventController.create);
 
 //Read Single Event
 eventRoute.get("/:id", eventController.get);
