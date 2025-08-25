@@ -6,7 +6,7 @@
  * Date:2025/08/21
  */
 //Dependencies
-const errorHandler = require("../handlers/error.handler");
+const EventModel = require("../models/event.model");
 const User = require("../models/user.model");
 const utils = require("../utils/utils");
 
@@ -73,6 +73,52 @@ exports.updateUser = async (req, res, next) => {
       success: true,
       message: "Profile update successfully",
       data: updatedUser,
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+//Get all event for the logged in user
+exports.getAllEvents = async (req, res, next) => {
+  try {
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) > 50 ? 50 : Number(req.query.limit);
+    const sortStage = { $sort: { time: 1 } };
+    const skipstage = { $skip: (page - 1) * limit };
+    const limitStage = { $limit: limit };
+    const projectionStage = {
+      $project: {
+        updatedAt: 0,
+        createdAt: 0,
+      },
+    };
+
+    const matchStage = {
+      $match: {
+        createdBy: utils.newObjectId(req.payload._id),
+      },
+    };
+
+    const events = await EventModel.aggregate([
+      matchStage,
+      {
+        $facet: {
+          totalEvents: [{ $count: "count" }],
+          events: [sortStage, skipstage, limitStage, projectionStage],
+        },
+      },
+    ]);
+    if (!events) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Event not found" });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Events fetch successfully",
+      data: events,
     });
   } catch (error) {
     return next(error);
