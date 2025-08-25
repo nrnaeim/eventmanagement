@@ -7,6 +7,7 @@
  */
 //Depnendesncies
 const EventModel = require("../models/event.model");
+const utils = require("../utils/utils");
 
 //Create Event
 exports.create = async (req, res, next) => {
@@ -35,7 +36,28 @@ exports.getAll = async (req, res, next) => {
 };
 
 //Read Single Event
-exports.getSingle = async (req, res, next) => {};
+exports.getSingle = async (req, res, next) => {
+  try {
+    const _id = utils.newObjectId(req.params.id);
+    const event = await EventModel.findById(_id);
+
+    //If event not found
+    if (!event) {
+      return res.status(400).json({
+        success: false,
+        message: "Event not found",
+      });
+    }
+
+    //If event fetch successfully
+    return res.status(400).json({
+      success: true,
+      message: "Event fetch successfully",
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
 
 //Update Event
 exports.update = async (req, res, next) => {};
