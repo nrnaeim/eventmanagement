@@ -18,5 +18,8 @@ userRoute.get("/profile", userController.getProfile);
 //Update user
 userRoute.post("/update", userController.updateUser);
 
+//Events created by user
+userRoute.get("/events", userController.getAllEvents);
+
 //Exporting user route
 module.exports = userRoute;
