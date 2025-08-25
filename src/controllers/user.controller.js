@@ -35,7 +35,7 @@ exports.getProfile = async (req, res, next) => {
       data: user,
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -75,6 +75,6 @@ exports.updateUser = async (req, res, next) => {
       data: updatedUser,
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
