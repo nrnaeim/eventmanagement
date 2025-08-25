@@ -35,7 +35,7 @@ exports.getAll = async (req, res, next) => {
 };
 
 //Read Single Event
-exports.get = async (req, res, next) => {};
+exports.getSingle = async (req, res, next) => {};
 
 //Update Event
 exports.update = async (req, res, next) => {};

@@ -17,7 +17,7 @@ const eventRoute = express.Router();
 eventRoute.post("/create", upload.single("bannar"), eventController.create);
 
 //Read Single Event
-eventRoute.get("/:id", eventController.get);
+eventRoute.get("/:id", eventController.getSingle);
 
 //Read All Events
 eventRoute.get("/", eventController.getAll);
