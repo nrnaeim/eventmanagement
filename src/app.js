@@ -10,15 +10,16 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const apiV1 = require("./api/api.v1");
+const errorHandler = require("./handlers/error.handler");
 
 //App instance
 const app = express();
 
 //Middlewares
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static("uploads"));
 app.use(express.json());
 app.use(cookieParser());
-app.use(express.static("uploads"));
 
 //API config
 app.use("/api/v1", apiV1);
@@ -36,6 +37,6 @@ app.use(async (req, res, next) => {
 });
 
 //Global level error handler
-
+app.use(errorHandler);
 //Exporting app
 module.exports = app;
