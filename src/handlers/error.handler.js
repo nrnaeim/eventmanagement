@@ -5,9 +5,12 @@
  * Email: nrnaeim@gmail.com
  * Date: 2025/08/20
  */
+//Dependencies
 const mongoose = require("mongoose");
 const JWT = require("jsonwebtoken");
+const multer = require("multer");
 
+//Error handler middleware
 const errorHandler = async (error, req, res, next) => {
   try {
     //Validation error handler
@@ -31,7 +34,10 @@ const errorHandler = async (error, req, res, next) => {
     }
 
     //MongoServerError
-    if (error.name === "MongoServerError" && error.code === 11000) {
+    if (
+      error instanceof mongoose.mongo.MongoServerError &&
+      error.code === 11000
+    ) {
       const errors = Object.keys(error.keyValue).map(
         (key) => `${error.keyValue[key]} already exist`
       );
@@ -56,6 +62,11 @@ const errorHandler = async (error, req, res, next) => {
       });
     }
 
+    //Multer error handler
+    if (error instanceof multer.MulterError) {
+      return res.status(400).json({ success: false, message: error.message });
+    }
+    
     //Default error handler
     return res.status(500).json({
       success: false,
