@@ -49,6 +49,7 @@ const eventSchema = new mongoose.Schema(
     },
     eventBanner: {
       type: String,
+      default: "uploads/default.jpg",
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
