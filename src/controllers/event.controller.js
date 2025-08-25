@@ -32,6 +32,23 @@ exports.create = async (req, res, next) => {
 
 //Read All Events
 exports.getAll = async (req, res, next) => {
+  try {
+    const events = await EventModel.find();
+    if (!events) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Event not found" });
+    }
+
+    return res.status(400).json({
+      success: true,
+      message: "Events fetch successfully",
+      data: events,
+    });
+  } catch (error) {
+    console.log(error);
+    return next(error);
+  }
   res.send("Hello from event controller");
 };
 
