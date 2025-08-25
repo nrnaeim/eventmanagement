@@ -23,10 +23,10 @@ eventRoute.get("/:id", eventController.getSingle);
 eventRoute.get("/", eventController.getAll);
 
 //Update Event
-eventRoute.put(":id/update", eventController.update);
+eventRoute.put("/:id/update", eventController.update);
 
 //Delete Event
-eventRoute.delete("/delete", eventController.delete);
+eventRoute.delete("/:id/delete", eventController.delete);
 
 //Exporting event route
 module.exports = eventRoute;
