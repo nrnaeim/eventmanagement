@@ -33,7 +33,16 @@ exports.create = async (req, res, next) => {
 //Read All Events
 exports.getAll = async (req, res, next) => {
   try {
-    const events = await EventModel.find();
+    const events = await EventModel.aggregate([
+      {
+        $lookup: {
+          from: "users",
+          foreignField: "_id",
+          localField: "createdBy",
+          as: "user",
+        },
+      },
+    ]);
     if (!events) {
       return res
         .status(400)
