@@ -11,7 +11,7 @@ const User = require("../models/user.model");
 const utils = require("../utils/utils");
 
 //Get user profile
-exports.getProfile = async (req, res) => {
+exports.getProfile = async (req, res, next) => {
   try {
     const _id = utils.newObjectId(req.payload._id);
     const projection = {
@@ -35,16 +35,12 @@ exports.getProfile = async (req, res) => {
       data: user,
     });
   } catch (error) {
-    const errReason = errorHandler(error);
-    return res.status(errReason.code).json({
-      success: false,
-      error: utils.ensureArray(errReason.error),
-    });
+    next(error);
   }
 };
 
 //Update user
-exports.updateUser = async (req, res) => {
+exports.updateUser = async (req, res, next) => {
   try {
     //Update stage
     const _id = utils.newObjectId(req.payload._id);
@@ -79,10 +75,6 @@ exports.updateUser = async (req, res) => {
       data: updatedUser,
     });
   } catch (error) {
-    const errReason = errorHandler(error);
-    return res.status(errReason.code).json({
-      success: false,
-      error: utils.ensureArray(errReason.error),
-    });
+    next(error);
   }
 };

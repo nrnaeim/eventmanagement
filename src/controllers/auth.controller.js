@@ -8,13 +8,11 @@
 //Dependencies
 
 const JWT = require("jsonwebtoken");
-const errorHandler = require("../handlers/error.handler");
-const utils = require("../utils/utils");
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 
 //Register controller
-exports.signUp = async (req, res) => {
+exports.signUp = async (req, res, next) => {
   try {
     const newUser = await User.create(req.body);
     //If new user not return
@@ -31,18 +29,12 @@ exports.signUp = async (req, res) => {
       message: "User created successfully",
     });
   } catch (error) {
-    const errReason = errorHandler(error);
-    //console.log(errReason);
-    return res.status(errReason.code).json({
-      success: false,
-      message: "Failed to create user",
-      error: utils.ensureArray(errReason.error),
-    });
+    next(error);
   }
 };
 
 //Sign in controller
-exports.signIn = async (req, res) => {
+exports.signIn = async (req, res, next) => {
   try {
     const { email, phoneNumber, password } = req.body;
 
@@ -110,29 +102,18 @@ exports.signIn = async (req, res) => {
       data: user,
     });
   } catch (error) {
-    console.log(error);
-    const errReason = errorHandler(error);
-    return res.status(errReason.code).json({
-      success: false,
-      message: "Failed to sign in",
-      error: utils.ensureArray(errReason.error),
-    });
+    next(error);
   }
 };
 
 //Sign out controller
-exports.signOut = async (req, res) => {
+exports.signOut = async (req, res, next) => {
   try {
     return res
       .clearCookie("authToken")
       .status(200)
       .json({ success: true, message: "User sign out successfullu" });
   } catch (error) {
-    const errReason = errorHandler(error);
-    return res.status(errReason.code).json({
-      success: false,
-      message: "Failed to sign out",
-      error: errReason.error,
-    });
+    next(error);
   }
 };
