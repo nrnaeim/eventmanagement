@@ -29,7 +29,7 @@ exports.signUp = async (req, res, next) => {
       message: "User created successfully",
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -102,7 +102,7 @@ exports.signIn = async (req, res, next) => {
       data: user,
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -114,6 +114,6 @@ exports.signOut = async (req, res, next) => {
       .status(200)
       .json({ success: true, message: "User sign out successfullu" });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
