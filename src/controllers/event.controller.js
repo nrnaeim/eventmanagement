@@ -40,7 +40,7 @@ exports.getAll = async (req, res, next) => {
         .json({ success: false, message: "Event not found" });
     }
 
-    return res.status(400).json({
+    return res.status(200).json({
       success: true,
       message: "Events fetch successfully",
       data: events,
