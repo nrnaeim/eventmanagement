@@ -40,6 +40,25 @@ exports.getAll = async (req, res, next) => {
           foreignField: "_id",
           localField: "createdBy",
           as: "user",
+          pipeline: [
+            {
+              $project: {
+                password: 0,
+                createdAt: 0,
+                updatedAt: 0,
+              },
+            },
+          ],
+        },
+      },
+      {
+        $addFields: { createdBy: { $arrayElemAt: ["$user", 0] } },
+      },
+      {
+        $project: {
+          user: 0,
+          createdAt: 0,
+          updatedAt: 0,
         },
       },
     ]);
