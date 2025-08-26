@@ -77,15 +77,42 @@ exports.getAll = async (req, res, next) => {
     console.log(error);
     return next(error);
   }
-  res.send("Hello from event controller");
 };
 
 //Read Single Event
 exports.getSingle = async (req, res, next) => {
   try {
     const _id = utils.newObjectId(req.params.id);
-    const event = await EventModel.findById(_id);
-
+    const event = await EventModel.aggregate([
+      { $match: { _id } },
+      {
+        $lookup: {
+          from: "users",
+          foreignField: "_id",
+          localField: "createdBy",
+          as: "createdBy",
+          pipeline: [
+            {
+              $project: {
+                password: 0,
+                createdAt: 0,
+                updatedAt: 0,
+              },
+            },
+          ],
+        },
+      },
+      {
+        $addFields: { createdBy: { $arrayElemAt: ["$createdBy", 0] } },
+      },
+      {
+        $project: {
+          createdAt: 0,
+          updatedAt: 0,
+        },
+      },
+    ]);
+    console.log(event);
     //If event not found
     if (!event) {
       return res.status(400).json({
@@ -98,8 +125,10 @@ exports.getSingle = async (req, res, next) => {
     return res.status(400).json({
       success: true,
       message: "Event fetch successfully",
+      data: event,
     });
   } catch (error) {
+    console.log(error);
     return next(error);
   }
 };
