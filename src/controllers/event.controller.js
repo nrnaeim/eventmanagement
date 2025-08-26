@@ -112,7 +112,7 @@ exports.getSingle = async (req, res, next) => {
         },
       },
     ]);
-    console.log(event);
+
     //If event not found
     if (!event) {
       return res.status(400).json({
